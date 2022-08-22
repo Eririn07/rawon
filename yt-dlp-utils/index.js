@@ -4,7 +4,7 @@ import { resolve } from "path";
 import got from "got";
 
 const suffix = process.platform === "win32" ? ".exe" : (
-    process.platform === "darwin" ? "_macos" : ""
+    process.platform === "darwin" ? "_macos" : "_linux"
 );
 const filename = `yt-dlp${suffix}`;
 const scriptsPath = resolve(process.cwd(), "scripts");
@@ -36,6 +36,7 @@ function json(str) {
 export async function downloadExecutable() {
     if (!existsSync(exePath)) {
         console.info("[INFO] Yt-dlp couldn't be found, trying to download...");
+        console.info("[INFO] Downloading ", filename)
         const releases = await got.get("https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=1").json();
         const release = releases[0];
         const asset = release.assets.find((asset) => asset.name === filename);
